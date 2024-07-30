@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+		
+    }
+	dependencies {
+		classpath 'com.bmuschko:gradle-cargo-plugin:2.9.0'
+	}
+}
+
+apply plugin: 'com.bmuschko.cargo'
+
+dependencies {
+    def cargoVersion = '1.9.10'
+    cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
+          "org.codehaus.cargo:cargo-licensed-dtds:$cargoVersion",
+          "org.codehaus.cargo:cargo-ant:$cargoVersion"
+}
+
+	
+cargo {
+    containerId = 'tomcat10'
+    port = 443
+
+    deployable {
+		file = file('order.war')
+        context = '/'
+    }
+
+    remote {
+		protocol = 'http'
+        hostname = '206.168.212.15'
+        username = 'test'
+        password = 'test123'
+    }
+
+    /*local {
+        homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
+        outputFile = file('build/output.log')
+        startStopTimeout = 60000
+
+        containerProperties {
+            property 'cargo.tomcat.ajp.port', 9099
+        }
+    }*/
+}
+
+
